@@ -234,7 +234,7 @@ public class InstructorInterface {
     }
 
 
-    private  void getStudentsInformation(Course course){
+    private void getStudentsInformation(Course course){
 
 
 
