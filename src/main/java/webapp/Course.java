@@ -41,4 +41,12 @@ public class Course {
     public int getExamType() {
         return examType;
     }
+
+    public void setGradeType(int gradeType) {
+        this.gradeType = gradeType;
+    }
+
+    public void setExamType(int examType) {
+        this.examType = examType;
+    }
 }

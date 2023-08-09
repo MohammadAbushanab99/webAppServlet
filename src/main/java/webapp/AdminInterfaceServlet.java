@@ -20,7 +20,7 @@ public class AdminInterfaceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Map<String,String> instructors;
-        instructors =GradingDAO.getInstructor();
+        instructors =UserDao.getInstructor();
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("id");
         String password = (String) session.getAttribute("password");
@@ -34,7 +34,7 @@ public class AdminInterfaceServlet extends HttpServlet {
         request.setAttribute("InstructorList", instructors);
 
 
-        List<Course> courses = GradingDAO.getCoursesInformation();
+        List<Course> courses = CourseDao.getCoursesInformation();
         request.setAttribute("courseList", courses);
 
         request.getRequestDispatcher("/WEB-INF/views/Admin.jsp").forward(request, response);
@@ -46,13 +46,13 @@ public class AdminInterfaceServlet extends HttpServlet {
             throws ServletException, IOException {
 
         Map<String,String> instructors;
-        instructors =GradingDAO.getInstructor();
+        instructors =UserDao.getInstructor();
         String instructorName= request.getParameter("InstructorName");
         request.setAttribute("InstructorList", instructors);
         if(instructorName != null &&!instructorName.isEmpty()){
             System.out.println("hello");
-            if(!GradingDAO.checkIfUserInputExist("instructors",instructorName)) {
-                GradingDAO.insertNewInstructor(instructorName);
+            if(!UserDao.checkIfUserInputExist("instructors",instructorName)) {
+                AdminDao.insertNewInstructor(instructorName);
                 System.out.println("aa");
             }
 
@@ -71,7 +71,7 @@ public class AdminInterfaceServlet extends HttpServlet {
         if(courseName != null &&!courseName.isEmpty()){
             if(instructorIdCourse != null &&!instructorIdCourse.isEmpty()) {
                 if (instructors.containsKey(instructorIdCourse)){
-                    GradingDAO.insertNewCourse(courseName,instructorIdCourse);
+                    AdminDao.insertNewCourse(courseName,instructorIdCourse);
 
                     response.setContentType("text/html");
                     PrintWriter out = response.getWriter();
@@ -87,21 +87,21 @@ public class AdminInterfaceServlet extends HttpServlet {
         String studentMajor= request.getParameter("StudentMajor");
         String selectedCourseId = request.getParameter("selectedCourseId");
         String studentId;
-        List<Course> courses = GradingDAO.getCoursesInformation();
+        List<Course> courses = CourseDao.getCoursesInformation();
         request.setAttribute("courseList", courses);
         System.out.println("0");
         if(studentName != null &&!studentName.isEmpty()){
             System.out.println("1");
             if(studentMajor != null &&!studentMajor.isEmpty()) {
                 System.out.println("2");
-                if(!GradingDAO.checkIfUserInputExist("students",studentName)){
-                    studentId =  GradingDAO.insertNewStudent(studentName, studentMajor);
+                if(!UserDao.checkIfUserInputExist("students",studentName)){
+                    studentId =  AdminDao.insertNewStudent(studentName, studentMajor);
                 }else
-                    studentId = GradingDAO.getUserId("students",studentName);
+                    studentId = UserDao.getUserId("students",studentName);
                 System.out.println(studentMajor);
                 System.out.println(studentId);
                 Course selectedCourse = getCourseById(Integer.parseInt(selectedCourseId), courses);
-                GradingDAO.addStudentToCourse(studentId, selectedCourse);
+                AdminDao.addStudentToCourse(studentId, selectedCourse);
 
                 response.setContentType("text/html");
                 PrintWriter out = response.getWriter();

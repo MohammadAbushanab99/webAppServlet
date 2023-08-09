@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class InstructorDao {
 
-    protected String getExamType(int id){
+    protected static String getExamType(int id){
 
         Connection connection = DatabaseConnection.getConnection();
         PreparedStatement preparedStatement = null;
@@ -51,9 +51,9 @@ public class InstructorDao {
         String examTypeName = "";
         Connection connection = DatabaseConnection.getConnection();
         PreparedStatement preparedStatement = null;
-        if (!studentGrades.isEmpty()){
-            studentGrades.clear();
-        }
+//        if (!studentGrades.isEmpty()){
+//            studentGrades.clear();
+//        }
 
         try {
 
@@ -112,6 +112,8 @@ public class InstructorDao {
         return studentGrades;
     }
 
+
+
     protected void getStudentsInformation(String studentId , List<StudentGrade> studentGrades ,List<StudentCourse> studentCourses){
 
 
@@ -168,62 +170,6 @@ public class InstructorDao {
 
     }
 
-//    protected void getStudentsInformation(String studentId , List<StudentGrade> studentGrades ,List<StudentCourse> studentCourses){
-//
-//
-//
-//
-//        Connection connection = DatabaseConnection.getConnection();
-//        PreparedStatement preparedStatement = null;
-//
-//        try {
-//
-//            String query = "SELECT first_exam,second_exam,final_exam,mid_exam,quizzes,total_grade,id_course,instructor_id FROM grade where student_id = ?";
-//            preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setString(1, studentId);
-//
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//
-//            if (!resultSet.isBeforeFirst()) {
-//                // No data found for the given student_id
-//                // Handle the empty result set as needed (e.g., display a message)
-//                System.out.println("No data found for the student.");
-//            } else {
-//                if (resultSet.next()) {
-//                    // Process the data as usual
-//                    // ...
-//
-//                    String instructorId = resultSet.getString("instructor_id");
-//                    int courseId =resultSet.getInt("id_course");
-//                    int firstExam = resultSet.getObject("first_exam") != null ? resultSet.getInt("first_exam") : 0;
-//                    int secondExam = resultSet.getObject("second_exam") != null ? resultSet.getInt("second_exam") : 0;
-//                    int finalExam = resultSet.getObject("final_exam") != null ? resultSet.getInt("final_exam") : 0;
-//                    int midExam = resultSet.getObject("mid_exam") != null ? resultSet.getInt("mid_exam") : 0;
-//                    int quizzes = resultSet.getObject("quizzes") != null ? resultSet.getInt("quizzes") : 0;
-//                    int totalGrade = resultSet.getObject("total_grade") != null ? resultSet.getInt("total_grade") : 0;
-//
-//                    StudentCourse course =getCoursesInformation(courseId ,studentCourses);
-//
-//                    StudentGrade grade = new StudentGrade(instructorId,firstExam,secondExam,finalExam,midExam,quizzes,totalGrade,courseId,course);
-//                    studentGrades.add(grade);
-//
-//
-//
-//                }
-//            }
-//
-//            resultSet.close();
-//            preparedStatement.close();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            System.out.println("4");
-//        }
-//
-//
-//    }
-
     protected static StudentCourse getCoursesInformation(int courseId, List<StudentCourse> studentCourses){
         Connection connection = DatabaseConnection.getConnection();
         PreparedStatement preparedStatement = null;
@@ -267,175 +213,238 @@ public class InstructorDao {
 
     }
 
+        protected void addCourseCriteria(String gradeType ,String examType,Course course ){
 
-//    private void addCourseCriteria(Scanner scanner){
-//
-//        Connection connection = DatabaseConnection.getConnection();
-//        PreparedStatement preparedStatement = null;
-//        ;
-//
-//        for (InstructorInterface.Course course : courses) {
-//            System.out.println(" Id : "+ course.id + " | " +"Course Name: " + course.courseName );
-//
-//            if (course.gradeType == 0 || course.examType == 0) {
-//
-//                if (course.gradeType == 0) {
+        int gradeTypeId, examTypeId;
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+
+
+        //for (Course course : courses) {
+            //System.out.println(" Id : "+ course.id + " | " +"Course Name: " + course.courseName );
+
+            //if (course.getGradeType() == 0 || course.examType == 0) {
+
 //                    System.out.println("Chose Grade Type");
 //                    System.out.println("1. Letter Grade");
 //                    System.out.println("2. Percentage Grade");
-//                    course.gradeType = scanner.nextInt();
-//                }
-//
-//                if (course.examType == 0) {
+
+                    if (gradeType.equalsIgnoreCase("Letter Grade"))
+                        gradeTypeId = 1;
+                    else
+                        gradeTypeId = 2;
+
+
 //                    System.out.println("Chose Exam Type");
 //                    System.out.println("1. Mid/Final");
 //                    System.out.println("2. First/Second/Final");
-//                    course.examType = scanner.nextInt();
-//                }
-//
-//                try {
-//
-//
-//                    String query = "UPDATE COURSES SET exam_type_id = ?, grad_type_id = ? WHERE id = ? AND instructor_id = ?";
-//                    preparedStatement = connection.prepareStatement(query);
-//                    preparedStatement.setInt(1, course.gradeType);
-//                    preparedStatement.setInt(2, course.examType);
-//                    preparedStatement.setInt(3, course.id);
-//                    preparedStatement.setString(4, course.instructorId);
-//                    int rowsAffected = preparedStatement.executeUpdate();
-//
-//                    if (rowsAffected > 0) {
-//                        System.out.println("Data inserted successfully.");
-//                    } else {
-//                        System.out.println("Failed to insert data.");
-//                    }
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    try {
-//                        if (preparedStatement != null) {
-//                            preparedStatement.close();
-//                        }
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println("all courses have Criteria");
-//    }
+                    if (gradeType.equalsIgnoreCase("Mid/Final"))
+                        examTypeId = 1;
+                    else
+                        examTypeId = 2;
 
 
-//    private static void addGradesForStudents(InstructorInterface.Course course , Scanner scanner){
-//
-//        Connection connection = DatabaseConnection.getConnection();
-//        PreparedStatement preparedStatement = null;
-//
-//        try {
-//            System.out.println();
-//            System.out.print("Enter Student Id: ");
-//            String studentId = scanner.next();
-//            System.out.println();
-//            if (course.examType == 1) {
-//
-//                System.out.print("Enter Mid Grade or press Enter to skip: ");
-//                int midGrade = scanner.nextInt();
-//                if (midGrade > 0) {
-//                    System.out.println("You entered: " + midGrade);
-//                }else
-//                    midGrade = 0;
-//
-//                System.out.print("Enter Quizzes Grade or press Enter to skip: ");
-//                int quizzesGrade = scanner.nextInt();
-//                if (quizzesGrade > 0) {
-//
-//                    System.out.println("You entered: " + quizzesGrade);
-//                }else
-//                    quizzesGrade =0;
-//
-//                System.out.print("Enter Quizzes Grade or press Enter to skip: ");
-//                int finalGrade = scanner.nextInt();
-//                if (finalGrade > 0) {
-//                    System.out.println("You entered: " + finalGrade);
-//                }else
-//                    finalGrade = 0;
-//
-//                String query = "UPDATE grade SET mid_exam = ?, quizzes = ?, final_exam = ? WHERE student_id = ? AND id_course = ?";
-//                preparedStatement = connection.prepareStatement(query);
-//                preparedStatement.setInt(1, midGrade);
-//                preparedStatement.setInt(2, quizzesGrade);
-//                preparedStatement.setInt(3, finalGrade);
-//                preparedStatement.setString(4,studentId);
-//                preparedStatement.setInt(5,course.id);
-//
-//
-//                int rowsAffected = preparedStatement.executeUpdate();
-//
-//                if (rowsAffected > 0) {
-//                    System.out.println("Data inserted successfully.");
-//                } else {
-//                    System.out.println("Failed to insert data.");
-//                }
-//            }else
-//            {
-//                System.out.print("Enter first Grade or press Enter to skip: ");
-//                String firstGrade = scanner.nextLine();
-//                if (!firstGrade.isEmpty()) {
-//                    System.out.println("You entered: " + firstGrade);
-//                }else
-//                    firstGrade ="0";
-//
-//                System.out.print("Enter Second Grade or press Enter to skip: ");
-//                String secondGrade = scanner.nextLine();
-//                if (!secondGrade.isEmpty()) {
-//
-//                    System.out.println("You entered: " + secondGrade);
-//                }else
-//                    secondGrade ="0";
-//
-//                System.out.print("Enter Quizzes Grade or press Enter to skip: ");
-//                String finalGrade = scanner.nextLine();
-//                if (!finalGrade.isEmpty()) {
-//
-//                    System.out.println("You entered: " + finalGrade);
-//                }else
-//                    finalGrade = "0";
-//
-//                String query = "UPDATE grade SET first_exam = ?, second_exam = ?, final_exam = ? WHERE student_id = ? AND id_course = ?";
-//                preparedStatement = connection.prepareStatement(query);
-//                preparedStatement.setInt(1, Integer.parseInt(firstGrade));
-//                preparedStatement.setInt(2, Integer.parseInt(secondGrade));
-//                preparedStatement.setInt(3, Integer.parseInt(finalGrade));
-//                preparedStatement.setString(4,studentId);
-//                preparedStatement.setInt(5,course.id);
-//
-//
-//                int rowsAffected = preparedStatement.executeUpdate();
-//
-//                if (rowsAffected > 0) {
-//                    System.out.println("Data inserted successfully.");
-//                } else {
-//                    System.out.println("Failed to insert data.");
-//                }
-//
-//
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (preparedStatement != null) {
-//                    preparedStatement.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//
-//
-//
-//    }
+                try {
+
+
+                    String query = "UPDATE COURSES SET exam_type_id = ?, grad_type_id = ? WHERE id = ? AND instructor_id = ?";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1, examTypeId);
+                    preparedStatement.setInt(2, gradeTypeId);
+                    preparedStatement.setInt(3, course.getId());
+                    preparedStatement.setString(4, course.getInstructorId());
+                    int rowsAffected = preparedStatement.executeUpdate();
+/////
+                    if (rowsAffected > 0) {
+                        System.out.println("Data inserted successfully.");
+                    } else {
+                        System.out.println("Failed to insert data.");
+                    }
+                    /////////
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (preparedStatement != null) {
+                            preparedStatement.close();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            //}
+     //   }
+       // System.out.println("all courses have Criteria");
+    }
+
+    protected static void addCourseCriteria(Scanner scanner ,List<Course> courses){
+
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+
+
+        for (Course course : courses) {
+            System.out.println(" Id : "+ course.getId() + " | " +"Course Name: " + course.getCourseName());
+
+            if (course.getGradeType() == 0 || course.getExamType() == 0) {
+
+                if (course.getGradeType() == 0) {
+                    System.out.println("Chose Grade Type");
+                    System.out.println("1. Letter Grade");
+                    System.out.println("2. Percentage Grade");
+                    course.setGradeType(scanner.nextInt());
+                }
+
+                if (course.getExamType() == 0) {
+                    System.out.println("Chose Exam Type");
+                    System.out.println("1. Mid/Final");
+                    System.out.println("2. First/Second/Final");
+                    course.setExamType(scanner.nextInt());
+                }
+
+                try {
+
+
+                    String query = "UPDATE COURSES SET exam_type_id = ?, grad_type_id = ? WHERE id = ? AND instructor_id = ?";
+                    preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setInt(1, course.getGradeType());
+                    preparedStatement.setInt(2, course.getExamType());
+                    preparedStatement.setInt(3, course.getId());
+                    preparedStatement.setString(4, course.getInstructorId());
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Data inserted successfully.");
+                    } else {
+                        System.out.println("Failed to insert data.");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (preparedStatement != null) {
+                            preparedStatement.close();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        System.out.println("all courses have Criteria");
+    }
+
+
+    protected static void addGradesForStudents(Course course , Scanner scanner){
+
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        try {
+            System.out.println();
+            System.out.print("Enter Student Id: ");
+            String studentId = scanner.next();
+            System.out.println();
+            if (course.getExamType() == 1) {
+
+                System.out.print("Enter Mid Grade or press Enter to skip: ");
+                int midGrade = scanner.nextInt();
+                if (midGrade > 0) {
+                    System.out.println("You entered: " + midGrade);
+                }else
+                    midGrade = 0;
+
+                System.out.print("Enter Quizzes Grade or press Enter to skip: ");
+                int quizzesGrade = scanner.nextInt();
+                if (quizzesGrade > 0) {
+
+                    System.out.println("You entered: " + quizzesGrade);
+                }else
+                    quizzesGrade =0;
+
+                System.out.print("Enter Quizzes Grade or press Enter to skip: ");
+                int finalGrade = scanner.nextInt();
+                if (finalGrade > 0) {
+                    System.out.println("You entered: " + finalGrade);
+                }else
+                    finalGrade = 0;
+
+                String query = "UPDATE grade SET mid_exam = ?, quizzes = ?, final_exam = ? WHERE student_id = ? AND id_course = ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, midGrade);
+                preparedStatement.setInt(2, quizzesGrade);
+                preparedStatement.setInt(3, finalGrade);
+                preparedStatement.setString(4,studentId);
+                preparedStatement.setInt(5, course.getId());
+
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Data inserted successfully.");
+                } else {
+                    System.out.println("Failed to insert data.");
+                }
+            }else
+            {
+                System.out.print("Enter first Grade or press Enter to skip: ");
+                String firstGrade = scanner.nextLine();
+                if (!firstGrade.isEmpty()) {
+                    System.out.println("You entered: " + firstGrade);
+                }else
+                    firstGrade ="0";
+
+                System.out.print("Enter Second Grade or press Enter to skip: ");
+                String secondGrade = scanner.nextLine();
+                if (!secondGrade.isEmpty()) {
+
+                    System.out.println("You entered: " + secondGrade);
+                }else
+                    secondGrade ="0";
+
+                System.out.print("Enter Quizzes Grade or press Enter to skip: ");
+                String finalGrade = scanner.nextLine();
+                if (!finalGrade.isEmpty()) {
+
+                    System.out.println("You entered: " + finalGrade);
+                }else
+                    finalGrade = "0";
+
+                String query = "UPDATE grade SET first_exam = ?, second_exam = ?, final_exam = ? WHERE student_id = ? AND id_course = ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1, Integer.parseInt(firstGrade));
+                preparedStatement.setInt(2, Integer.parseInt(secondGrade));
+                preparedStatement.setInt(3, Integer.parseInt(finalGrade));
+                preparedStatement.setString(4,studentId);
+                preparedStatement.setInt(5, course.getId());
+
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Data inserted successfully.");
+                } else {
+                    System.out.println("Failed to insert data.");
+                }
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+    }
 
     private static String getInstructorName(String id){
         Connection connection = DatabaseConnection.getConnection();

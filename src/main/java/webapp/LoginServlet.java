@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 			HttpServletResponse response) throws IOException, ServletException {
 		 id = request.getParameter("id");
 		 password = request.getParameter("password");
-		String userType = GradingDAO.checkUserInput(id, password);
+		String userType = UserDao.checkUserInput(id, password);
 		if (userType != null && !userType.isEmpty()) {
 		//	choseInterfaceUser(userType, id, password);
 			handleLogin(request, response,userType);

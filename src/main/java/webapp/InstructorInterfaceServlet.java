@@ -24,14 +24,14 @@ public class InstructorInterfaceServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("id");
         String password = (String) session.getAttribute("password");
-        String name = GradingDAO.getInstructorName(id);
+        String name = UserDao.getInstructorName(id);
 
         if (id != null && !id.isEmpty()) {
             request.setAttribute("instructorId", id);
             request.setAttribute("instructorName", name);
         }
 
-        List<Course> courses = GradingDAO.getCoursesInformation(id);
+        List<Course> courses = CourseDao.getCoursesInformation(id);
         request.setAttribute("courseList", courses);
         String selectedCourseIdParam = request.getParameter("selectedCourseId");
 
@@ -45,7 +45,7 @@ public class InstructorInterfaceServlet extends HttpServlet {
                 this.courseId = Integer.parseInt(selectedCourseIdParam);
                 selectedCourseId = Integer.parseInt(selectedCourseIdParam);
                  selectedCourse = getCourseById(selectedCourseId, courses);
-                List<Grade> students = GradingDAO.getStudentsInformation(selectedCourse, selectedCourse.getInstructorId());
+                List<Grade> students = InstructorDao.getStudentsInformation(selectedCourse, selectedCourse.getInstructorId());
                 request.setAttribute("selectedCourseId", selectedCourseId);
                 request.setAttribute("selectedCourseName", selectedCourse.getCourseName());
 

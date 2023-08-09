@@ -55,6 +55,6 @@ public class Grade {
 
     public String getName() {
 
-        return GradingDAO.getStudentName(studentId);
+        return UserDao.getStudentName(studentId);
     }
 }
